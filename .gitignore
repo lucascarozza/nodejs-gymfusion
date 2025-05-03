@@ -6,6 +6,7 @@ node_modules
 
 # Prisma
 generated
+migrations
 
 # Build
 build
