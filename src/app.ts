@@ -12,9 +12,9 @@ export const app = fastify();
 
 const prisma = new PrismaClient();
 
-prisma.user.create({
-  data: {
-    name: "Usuário Teste",
-    email: "email@email.com",
-  },
-});
+// prisma.user.create({
+//   data: {
+//     name: "Usuário Teste",
+//     email: "email@email.com",
+//   },
+// });
