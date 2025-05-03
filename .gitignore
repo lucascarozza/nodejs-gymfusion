@@ -4,5 +4,8 @@ node_modules
 # Enviroment variables
 .env
 
+# Prisma
+generated
+
 # Build
 build
