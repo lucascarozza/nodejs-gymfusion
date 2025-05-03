@@ -1,0 +1,26 @@
+{
+  "name": "rocketseat-nodejs-gymfusion",
+  "version": "1.0.0",
+  "description": "GymFusion is as GymPass style app designed to bring flexibility and accessibility to fitness, making it easier than ever to explore and connect with gyms and wellness facilities. Built with a focus on convenience and user experience, it streamlines the way people approach their fitness routines",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsup src --out-dir build",
+    "start": "node build/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "@types/node": "22.15.3",
+    "fastify": "5.3.2",
+    "tsup": "8.4.0",
+    "tsx": "4.19.4",
+    "typescript": "5.8.3"
+  },
+  "dependencies": {
+    "dotenv": "16.5.0",
+    "zod": "3.24.3"
+  }
+}
