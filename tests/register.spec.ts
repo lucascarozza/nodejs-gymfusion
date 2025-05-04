@@ -1,17 +1,24 @@
 // External libraries
 import { compare } from "bcryptjs";
-import { describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it } from "vitest";
 // Internal utilities
 import { RegisterService } from "@/services/register-service";
 import { InMemoryUsersRepository } from "@/repositories/in-memory/in-memory-users-repository";
 import { UserAlreadyExistsError } from "@/services/errors/user-already-exists-error";
 
-describe("Register Service", () => {
-  it("should successfully register a new user", async () => {
-    const mockRepository = new InMemoryUsersRepository();
-    const registerService = new RegisterService(mockRepository);
+let mockRepository: InMemoryUsersRepository;
+let sut: RegisterService;
 
-    const { user } = await registerService.register({
+describe("Register Service", () => {
+  beforeEach(() => {
+    mockRepository = new InMemoryUsersRepository();
+    sut = new RegisterService(mockRepository);
+  })
+    
+  it("should successfully register a new user", async () => {
+    
+
+    const { user } = await sut.register({
       name: "Usuário Vitest",
       email: "test@vitest.com",
       password: "toBeHashed123",
@@ -21,10 +28,7 @@ describe("Register Service", () => {
   });
 
   it("should hash password upon registration", async () => {
-    const mockRepository = new InMemoryUsersRepository();
-    const registerService = new RegisterService(mockRepository);
-
-    const { user } = await registerService.register({
+    const { user } = await sut.register({
       name: "Usuário Vitest",
       email: "test@vitest.com",
       password: "toBeHashed123",
@@ -39,19 +43,16 @@ describe("Register Service", () => {
   });
 
   it("should prevent duplicate email registration", async () => {
-    const mockRepository = new InMemoryUsersRepository();
-    const registerService = new RegisterService(mockRepository);
-
     const email = "test@vitest.com";
 
-    await registerService.register({
+    await sut.register({
       name: "Usuário Vitest",
       email,
       password: "87654321",
     });
 
     await expect(() =>
-      registerService.register({
+      sut.register({
         name: "Usuário Vitest",
         email,
         password: "12345678",
