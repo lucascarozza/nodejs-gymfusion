@@ -1,5 +1,7 @@
+// External libraries
+import { randomUUID } from "node:crypto";
 // Internal utilities
-import { Gym } from "generated/prisma/client";
+import { Gym, Prisma } from "generated/prisma/client";
 import { GymsRepository } from "../gyms-repository";
 
 /*
@@ -16,4 +18,19 @@ export class InMemoryGymsRepository implements GymsRepository {
 
     return gym;
   }
+
+  async create(data: Prisma.GymCreateInput) {
+      const gym = {
+        id: data.id ?? randomUUID(),
+        name: data.name,
+        description: data.description ?? null,
+        phone: data.phone ?? null,
+        latitude: new Prisma.Decimal(data.latitude.toString()),
+        longitude: new Prisma.Decimal(data.longitude.toString()),
+        created_at: new Date(),
+      };
+  
+      this.memory.push(gym);
+      return gym;
+    }
 }

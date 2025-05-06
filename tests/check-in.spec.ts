@@ -5,18 +5,20 @@ import { Decimal } from "@prisma/client/runtime/library";
 import { InMemoryCheckInsRepository } from "@/repositories/in-memory/in-memory-check-ins-repository";
 import { CheckInService } from "@/services/check-in-service";
 import { InMemoryGymsRepository } from "@/repositories/in-memory/in-memory-gyms-repository";
+import { CheckInLimitExceededError } from "@/services/errors/check-in-limit-exceeded-error";
+import { MaxDistanceExceededError } from "@/services/errors/max-distance-exceeded-error";
 
 let mockCheckInsRepository: InMemoryCheckInsRepository;
 let mockGymsRepository: InMemoryGymsRepository;
 let sut: CheckInService;
 
 describe("Check-In Service", () => {
-  beforeEach(() => {
+  beforeEach(async () => {
     mockCheckInsRepository = new InMemoryCheckInsRepository();
     mockGymsRepository = new InMemoryGymsRepository();
     sut = new CheckInService(mockCheckInsRepository, mockGymsRepository);
 
-    mockGymsRepository.memory.push({
+    await mockGymsRepository.create({
       id: "1",
       name: "Gym",
       description: null,
@@ -60,7 +62,7 @@ describe("Check-In Service", () => {
         userLatitude: -38.83246,
         userLongitude: -103.80138,
       })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(CheckInLimitExceededError);
   });
 
   it("should allow check-ins on different days", async () => {
@@ -93,6 +95,6 @@ describe("Check-In Service", () => {
         userLatitude: 22.92882,
         userLongitude: -8.73116,
       })
-    ).rejects.toBeInstanceOf(Error);
+    ).rejects.toBeInstanceOf(MaxDistanceExceededError);
   });
 });
