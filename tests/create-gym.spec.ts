@@ -14,7 +14,7 @@ describe("Create Gym Service", () => {
   });
 
   it("should successfully create a new gym", async () => {
-    const { gym } = await sut.register({
+    const { gym } = await sut.createGym({
       name: "Gym",
       description: "Gym description",
       phone: null,
