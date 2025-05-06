@@ -24,7 +24,7 @@ export class CheckInService {
     private gymsRepository: GymsRepository
   ) {}
 
-  async authenticate({
+  async checkIn({
     userId,
     gymId,
     userLatitude,

@@ -35,7 +35,7 @@ describe("Check-In Service", () => {
   });
 
   it("should successfully check-in", async () => {
-    const { checkIn } = await sut.authenticate({
+    const { checkIn } = await sut.checkIn({
       gymId: "1",
       userId: "2",
       userLatitude: -38.83246,
@@ -48,7 +48,7 @@ describe("Check-In Service", () => {
   it("should prevent multiple check-ins on the same day", async () => {
     vi.setSystemTime(new Date(2025, 0, 20, 8, 0, 0));
 
-    await sut.authenticate({
+    await sut.checkIn({
       gymId: "1",
       userId: "2",
       userLatitude: -38.83246,
@@ -56,7 +56,7 @@ describe("Check-In Service", () => {
     });
 
     await expect(() =>
-      sut.authenticate({
+      sut.checkIn({
         gymId: "1",
         userId: "2",
         userLatitude: -38.83246,
@@ -68,7 +68,7 @@ describe("Check-In Service", () => {
   it("should allow check-ins on different days", async () => {
     vi.setSystemTime(new Date(2025, 0, 20, 8, 0, 0));
 
-    await sut.authenticate({
+    await sut.checkIn({
       gymId: "1",
       userId: "2",
       userLatitude: -38.83246,
@@ -77,7 +77,7 @@ describe("Check-In Service", () => {
 
     vi.setSystemTime(new Date(2025, 0, 21, 8, 0, 0));
 
-    const { checkIn } = await sut.authenticate({
+    const { checkIn } = await sut.checkIn({
       gymId: "1",
       userId: "2",
       userLatitude: -38.83246,
@@ -89,7 +89,7 @@ describe("Check-In Service", () => {
 
   it("should restrict check-ins at distant gyms", async () => {
     await expect(() =>
-      sut.authenticate({
+      sut.checkIn({
         gymId: "1",
         userId: "2",
         userLatitude: 22.92882,
