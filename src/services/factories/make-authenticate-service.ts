@@ -1,10 +1,10 @@
 // Internal utilities
 import { PrismaUsersRepository } from "@/repositories/prisma/prisma-users-repository";
-import { AuthenticateService } from "../authenticate-service";
+import { GetUserProfileService } from "../get-user-profile-service";
 
 export function makeAuthenticateService() {
   const usersRepository = new PrismaUsersRepository();
-  const authenticateService = new AuthenticateService(usersRepository);
+  const service = new GetUserProfileService(usersRepository);
 
-  return authenticateService;
+  return service;
 }
