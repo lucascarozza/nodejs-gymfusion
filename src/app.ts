@@ -1,11 +1,16 @@
 // External libraries
 import fastify from "fastify";
+import fastifyJwt from "@fastify/jwt";
 import { ZodError } from "zod";
 // Internal utilities
 import { routes } from "./http/routes";
 import { env } from "./env";
 
 export const app = fastify();
+
+app.register(fastifyJwt, {
+  secret: env.JWT_SECRET,
+});
 
 app.register(routes);
 
@@ -19,7 +24,7 @@ app.setErrorHandler((error, _request, reply) => {
   if (env.NODE_ENV !== "production") {
     console.error(error);
   } else {
-  // todo: log errors to external tool
+    // todo: log errors to external tool
   }
 
   return reply.status(500).send({ message: "Internal server error." });

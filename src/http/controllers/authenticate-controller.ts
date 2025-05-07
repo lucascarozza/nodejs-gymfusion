@@ -26,17 +26,26 @@ export async function authenticateController(
   try {
     const authenticateService = makeAuthenticateService();
 
-    await authenticateService.authenticate({
+    const { user } = await authenticateService.authenticate({
       email,
       password,
     });
+
+    const token = await reply.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+        },
+      }
+    );
+
+    return reply.status(200).send({ token });
   } catch (error) {
     if (error instanceof InvalidCredentialsError) {
       return reply.status(400).send({ message: error.message });
     }
 
-    throw error
+    throw error;
   }
-
-  return reply.status(200).send();
 }
