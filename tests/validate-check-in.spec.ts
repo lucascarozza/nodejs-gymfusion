@@ -1,5 +1,5 @@
 // External libraries
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 // Internal utilities
 import { InMemoryCheckInsRepository } from "@/repositories/in-memory/in-memory-check-ins-repository";
 import { ValidateCheckInService } from "@/services/validate-check-in-service";
@@ -13,12 +13,12 @@ describe("Validate Check-In Service", () => {
     mockCheckInsRepository = new InMemoryCheckInsRepository();
     sut = new ValidateCheckInService(mockCheckInsRepository);
 
-    // vi.useFakeTimers();
+    vi.useFakeTimers();
   });
 
-  // afterEach(() => {
-  //   vi.useRealTimers();
-  // });
+  afterEach(() => {
+    vi.useRealTimers();
+  });
 
   it("should allow check-in if all conditions are met", async () => {
     const createdCheckIn = await mockCheckInsRepository.create({
@@ -42,5 +42,22 @@ describe("Validate Check-In Service", () => {
         id: "inexistent",
       })
     ).rejects.toBeInstanceOf(ResourceNotFoundError);
+  });
+
+  it("should prevent validation after 20 minutes", async () => {
+    vi.setSystemTime(new Date(2025, 0, 1, 13, 40));
+
+    const createdCheckIn = await mockCheckInsRepository.create({
+      gym_id: "1",
+      user_id: "1",
+    });
+
+    vi.advanceTimersByTime(1000 * 60 * 21);
+
+    await expect(() =>
+      sut.validate({
+        id: createdCheckIn.id,
+      })
+    ).rejects.toBeInstanceOf(Error);
   });
 });
