@@ -3,7 +3,7 @@ import request from "supertest";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 // Internal utilities
 import { app } from "@/app";
-import { createAndAuthenticateUser } from "@/utils/tests/create-and-authenticate-user";
+import { createAndAuthenticateUser } from "@/utils/create-and-authenticate-user";
 import { prisma } from "@/lib/prisma";
 
 describe("Metrics Controller", () => {

@@ -6,6 +6,7 @@ import { createController } from "./create-controller";
 import { validateController } from "./validate-controller";
 import { historyController } from "./history-controller";
 import { metricsController } from "./metrics-controller";
+import { verifyUserRole } from "@/http/middlewares/verify-user-role";
 
 export async function checkInRoutes(app: FastifyInstance) {
   // Authenticated routes
@@ -16,5 +17,9 @@ export async function checkInRoutes(app: FastifyInstance) {
   app.get("/check-in/history", historyController);
   app.get("/check-in/metrics", metricsController);
   // PATCH routes
-  app.patch("/check-in/:checkInId/validate", validateController);
+  app.patch(
+    "/check-in/:checkInId/validate",
+    { onRequest: [verifyUserRole("ADMIN")] },
+    validateController
+  ); // Admin only
 }

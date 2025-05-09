@@ -3,7 +3,7 @@ import request from "supertest";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 // Internal utilities
 import { app } from "@/app";
-import { createAndAuthenticateUser } from "@/utils/tests/create-and-authenticate-user";
+import { createAndAuthenticateUser } from "@/utils/create-and-authenticate-user";
 import { prisma } from "@/lib/prisma";
 
 describe("Validate Check-in Controller", () => {
@@ -16,7 +16,7 @@ describe("Validate Check-in Controller", () => {
   });
 
   it("should allow check-in if all conditions are met", async () => {
-    const { token } = await createAndAuthenticateUser(app);
+    const { token } = await createAndAuthenticateUser(app, true);
 
     const user = await prisma.user.findFirstOrThrow();
 
