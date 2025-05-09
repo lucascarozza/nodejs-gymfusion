@@ -3,7 +3,7 @@ import request from "supertest";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 // Internal utilities
 import { app } from "@/app";
-import { createAndAuthenticateUser } from "@/utils/tests/create-and-authenticate-user";
+import { createAndAuthenticateUser } from "@/utils/create-and-authenticate-user";
 
 describe("Search Nearby Controller", () => {
   beforeAll(async () => {
@@ -15,7 +15,7 @@ describe("Search Nearby Controller", () => {
   });
 
   it("should return nearby gyms", async () => {
-    const { token } = await createAndAuthenticateUser(app);
+    const { token } = await createAndAuthenticateUser(app, true);
 
     await request(app.server)
       .post("/gyms/create")
